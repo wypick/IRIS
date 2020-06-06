@@ -56,4 +56,31 @@ Method getSubscription(data) As %String
  	quit
 }
 
+Method getSubscriptionforselect(data) As %String
+{
+	set data = []
+	&sql(
+	 	DECLARE MyCursor CURSOR FOR
+	    SELECT id, description, price
+	    INTO :id, :description, :price
+	    FROM SportClub.Subscription
+ 	)
+ 	//вариант в массив INTO :singleUserData()
+ 	&sql(OPEN MyCursor)
+ 	
+  FOR { 
+    &sql(FETCH MyCursor)
+    if (SQLCODE) quit
+
+
+	set value = description_" "_price
+	set obj = {"id": (id), "value": (value)}
+
+    do data.%Push(obj)
+ 	}
+ 	&sql(CLOSE MyCursor)
+ 	
+ 	quit
+}
+
 }

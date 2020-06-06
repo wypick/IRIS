@@ -32,6 +32,32 @@ ClassMethod DeleteClient(ID As %Integer) As %Status
     Return result
 }
 
+Method getClientsforselect(data) As %String
+{
+	set data = []
+	&sql(
+	 	DECLARE MyCursor CURSOR FOR
+	    SELECT id, name, phone
+	    INTO :id, :name, :phone
+	    FROM SportClub.Clients
+ 	)
+ 	//вариант в массив INTO :singleUserData()
+ 	&sql(OPEN MyCursor)
+ 	
+  FOR { 
+    &sql(FETCH MyCursor)
+    if (SQLCODE) quit
+
+  //  set obj = {"id": (id), "name": (name), "phone": (phone)}
+	set value = name_" "_phone
+	set obj = {"id": (id), "value": (value)}
+    do data.%Push(obj)
+ 	}
+ 	&sql(CLOSE MyCursor)
+ 	
+ 	quit
+}
+
 Method getClients(data) As %String
 {
 	set data = []

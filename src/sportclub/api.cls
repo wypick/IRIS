@@ -10,10 +10,12 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 
   <Route Url="/clients/save" Method="POST" Call="SaveClient"/>
   <Route Url="/clients/get" Method="GET" Call="GetClients"/>
+ <Route Url="/clients/getforselect" Method="GET" Call="GetClientsforselect"/>
   <Route Url="/clients/delete" Method="DELETE" Call="DeleteClient"/>
 
   <Route Url="/subscription/save" Method="POST" Call="SaveSubscription"/>
   <Route Url="/subscription/get" Method="GET" Call="GetSubscription"/>
+  <Route Url="/subscription/getforselect" Method="GET" Call="GetSubscriptionforselect"/>
   <Route Url="/subscription/delete" Method="DELETE" Call="DeleteSubscription"/>
   
   <Route Url="/gym/save" Method="POST" Call="SaveGym"/>
@@ -32,6 +34,14 @@ ClassMethod GetClients() As %Status
 {
   set obj = ##class(SportClub.Clients).%New()
   do obj.getClients(.clientsArray)
+  write clientsArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod GetClientsforselect() As %Status
+{
+  set obj = ##class(SportClub.Clients).%New()
+  do obj.getClientsforselect(.clientsArray)
   write clientsArray.%ToJSON()
   Return $$$OK
 }
@@ -116,6 +126,14 @@ ClassMethod GetSubscription() As %Status
 {
   set obj = ##class(SportClub.Subscription).%New()
   do obj.getSubscription(.subscriptionArray)
+  write subscriptionArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod GetSubscriptionforselect() As %Status
+{
+  set obj = ##class(SportClub.Subscription).%New()
+  do obj.getSubscriptionforselect(.subscriptionArray)
   write subscriptionArray.%ToJSON()
   Return $$$OK
 }

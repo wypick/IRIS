@@ -65,8 +65,6 @@ var menu_data = [
      ]},
 ];
 
-
-
 var addClientToAccounting = (rawData) => {
     let data = JSON.parse(rawData);
     let message;
@@ -85,14 +83,33 @@ var accounting_form_template = {
   width: "400",
   height: "600",
   elements:[
-    {view:"select", name: "client", label:"Client", value:1, options:"/sportclubapi/clients/get", labelAlign:"right"},
-    {view:"select", name: "subscription", label:"Subscription", value:1, options:"/sportclubapi/subscription/get", labelAlign:"right" },
+    {view:"select", name: "client", label:"Client", value:1, options:"/sportclubapi/clients/getforselect", labelAlign:"right"},
+    {view:"select", name: "subscription", label:"Subscription", value:1, options:"/sportclubapi/subscription/getforselect", labelAlign:"right" },
     { view:"button",  value:"Submit", id:"btn1", click:function(){
       var values = this.getFormView().getValues();
       webix.ajax().post("/sportclubapi/accounting/save", values, addClientToAccounting);
     }}
   ]
 };
+
+var accounting_list_template = {
+  id:"tab1_list_content",
+  view:"list",
+  template:"<div style='padding-left:18px'> Client:#client#, Subscription:#subscription# </div> <button class='webix_remove_upload' click='onDelete()'>Delete</button>",
+  type:{
+    height:60
+  },
+  select:true,
+  url:"/sportclubapi/accounting/get",
+  onClick:{
+        "webix_remove_upload":function(ev, id){
+            webix.ajax().del("/sportclubapi/accounting/delete?id="+id, { id : id }).then((data) => {
+              this.remove(id);
+            });
+           // blocks the default click behavior
+        }
+    }
+  };
 
 
 var onDelete = () => {
@@ -102,7 +119,7 @@ var onDelete = () => {
 var client_list_template = {
   id:"tab2_list_content",
   view:"list",
-  template:"<div style='padding-left:18px'> Name:#name#, Phone:#phone# </div> <button class='webix_remove_upload' click='onDelete()'>Delete</button>",
+  template:"<div style='padding-left:18px'> ID:#id#, Name:#name#, Phone:#phone# </div> <button class='webix_remove_upload' click='onDelete()'>Delete</button>",
   type:{
     height:60
   },
@@ -122,6 +139,7 @@ var client_form_template = {
  id:"tab2_form_content",
  view:"form",
  width: "400",
+ height: "400",
  elements:[
    {view: "text", name: "name", label: "Name"},
    {view: "text", name: "phone", label: "Phone", type: 'number'},
@@ -136,7 +154,7 @@ var client_form_template = {
 var subscription_list_template = {
   id:"tab3_list_content",
   view:"list",
-  template:"<div style='padding-left:18px'> Description:#description#, Price:#price#</div> <button class='webix_remove_upload' click='onDelete()'>Delete</button>",
+  template:"<div style='padding-left:18px'> ID:#id#, Description:#description#, Price:#price#</div> <button class='webix_remove_upload' click='onDelete()'>Delete</button>",
   type:{
     height:60
   },
@@ -156,6 +174,7 @@ var subscription_list_template = {
  id:"tab3_form_content",
  view:"form",
  width: "400",
+ height: "400",
  elements:[
    {view: "text", name: "description", label: "Description"},
    {view: "text", name: "price", label: "Price", type: 'number'},
@@ -192,6 +211,7 @@ var subscription_list_template = {
  id:"tab4_form_content",
  view:"form",
  width: "400",
+ height: "400",
  elements:[
    {view: "text", name: "namegym", label: "Gym Name"},
    { view:"button",  value:"Submit", id:"btn4", click:function(){
@@ -225,6 +245,7 @@ var coach_list_template = {
 var coach_form_template = {
  id:"tab5_form_content",
  view:"form",
+ height: "400",
  width: "400",
  elements:[
    {view: "text", name: "namecoach", label: "Name"},
@@ -266,7 +287,7 @@ var ui_template = {
       },
       { id:"t1_content",
           cells:[
-         // accounting_list_template
+          accounting_list_template,
           accounting_form_template,
             client_list_template,
             client_form_template,
