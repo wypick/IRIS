@@ -68,9 +68,9 @@ ClassMethod SaveAccounting() As %Status
     else {
         set result = {"result": true}
     }
-    write result.%ToJSON()
     set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
     set result.message = ErrorMessage
+    write result.%ToJSON()
 
     Return $$$OK
 }
@@ -80,14 +80,20 @@ ClassMethod SaveClient() As %Status
     set obj = {}
     set obj.Name = %request.Get("name")
     set obj.Phone = %request.Get("phone")
-    set result = ##class(SportClub.Utils).SaveClients(obj)
-    if $$$ISERR(result) {
-        write result
+    set saveResult = ##class(SportClub.Utils).SaveClients(obj)
+
+    set result = {}
+    if $$$ISERR(saveResult) {
+        set result = {"result": false}
     }
     else {
-        write "ok"
+        set result = {"result": true}
     }
-    Return result
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
+    set result.message = ErrorMessage
+    write result.%ToJSON()
+
+    Return $$$OK
 }
 
 ClassMethod DeleteClient() As %Status
@@ -143,14 +149,20 @@ ClassMethod SaveSubscription() As %Status
     set obj = {}
     set obj.Description = %request.Get("description")
     set obj.Price = %request.Get("price")
-    set result = ##class(SportClub.Utils).SaveSubscription(obj)
-    if $$$ISERR(result) {
-        write result
+    set saveResult = ##class(SportClub.Utils).SaveSubscription(obj)
+
+    set result = {}
+    if $$$ISERR(saveResult) {
+        set result = {"result": false}
     }
     else {
-        write "ok"
+        set result = {"result": true}
     }
-    Return result
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
+    set result.message = ErrorMessage
+    write result.%ToJSON()
+
+    Return $$$OK
 }
 
 ClassMethod DeleteSubscription() As %Status
@@ -173,14 +185,20 @@ ClassMethod SaveGym() As %Status
 {
     set object = {}
     set object.Name = %request.Get("namegym")
-    set result = ##class(SportClub.Utils).SaveGym(object)
-    if $$$ISERR(result) {
-        write result
+    set saveResult = ##class(SportClub.Utils).SaveGym(object)
+
+    set result = {}
+    if $$$ISERR(saveResult) {
+        set result = {"result": false}
     }
     else {
-        write "ok"
+        set result = {"result": true}
     }
-    Return result
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
+    set result.message = ErrorMessage
+    write result.%ToJSON()
+
+    Return $$$OK
 }
 
 ClassMethod GetGym() As %Status
@@ -211,14 +229,20 @@ ClassMethod SaveCoach() As %Status
 {
     set object = {}
     set object.Name = %request.Get("namecoach")
-    set result = ##class(SportClub.Utils).SaveCoach(object)
-    if $$$ISERR(result) {
-        write result
+    set saveResult = ##class(SportClub.Utils).SaveCoach(object)
+
+    set result = {}
+    if $$$ISERR(saveResult) {
+        set result = {"result": false}
     }
     else {
-        write "ok"
+        set result = {"result": true}
     }
-    Return result
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
+    set result.message = ErrorMessage
+    write result.%ToJSON()
+
+    Return $$$OK
 }
 
 ClassMethod GetCoaches() As %Status

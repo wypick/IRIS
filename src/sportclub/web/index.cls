@@ -29,14 +29,17 @@ ClassMethod body() As %Status
   &JS<
 <script type="text/javascript">
 
-  function submitResult(rawData){
-       if (rawData === 'ok')
-               webix.message({text: 'Successfully saved', type: 'success'})
-       else
-               webix.message({text: 'Error on save', type: 'error'})
- 
-}
-
+var submitResult = (rawData) => {
+    let data = JSON.parse(rawData);
+    let message;
+    if (data.result) {
+      message = { type:"success", text: "Successfully saved", expire:2000};
+      $$('tab2_form_content').clear();
+    }
+    else
+      message = { type:"error", text: data.message, expire: 2000};
+      webix.message(message);
+  };
 
 var menu_data = [
 	{id: "tab1", icon: "mdi mdi-table", value:"Accounting", data: [
