@@ -37,10 +37,14 @@ Method getAccounting(data) As %String
 	set data = []
 	&sql(
 	 	DECLARE MyCursor CURSOR FOR
-	    SELECT id, client, subscription
+	    SELECT SportClub.Accounting.ID, SportClub.Clients.name, SportClub.Subscription.description
 	    INTO :id, :client, :subscription
-	    FROM SportClub.Accounting
+	    FROM SportClub.Accounting JOIN SportClub.Clients
+    ON SportClub.Accounting.client = SportClub.Clients.ID
+    JOIN SportClub.Subscription
+    ON SportClub.Accounting.subscription = SportClub.Subscription.ID
  	)
+     
  	//вариант в массив INTO :singleUserData()
  	&sql(OPEN MyCursor)
  	
